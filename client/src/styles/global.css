@@ -1,0 +1,241 @@
+/* =====================================
+   GOOGLE FONT
+===================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* =====================================
+   ROOT VARIABLES
+===================================== */
+
+:root {
+
+  --primary: #0056D2;
+
+  --secondary: #00A8E8;
+
+  --success: #28A745;
+
+  --danger: #DC3545;
+
+  --background: #F5F7FA;
+
+  --dark: #1E293B;
+
+  --white: #FFFFFF;
+
+  --glass:
+    rgba(
+      255,
+      255,
+      255,
+      0.15
+    );
+
+  --border:
+    rgba(
+      255,
+      255,
+      255,
+      0.2
+    );
+}
+
+/* =====================================
+   RESET
+===================================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+
+  font-family:
+    "Poppins",
+    sans-serif;
+
+  background:
+    var(--background);
+
+  overflow-x: hidden;
+}
+
+a {
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+input,
+textarea,
+select,
+button {
+  font-family:
+    inherit;
+}
+
+/* =====================================
+   AUTH PAGE
+===================================== */
+
+.auth-page {
+
+  min-height: 100vh;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--primary),
+      var(--secondary)
+    );
+
+  padding: 20px;
+}
+
+/* =====================================
+   GLASS CARD
+===================================== */
+
+.glass-card {
+
+  width: 450px;
+
+  padding: 30px;
+
+  border-radius: 20px;
+
+  backdrop-filter: blur(20px);
+
+  background:
+    var(--glass);
+
+  border:
+    1px solid
+    var(--border);
+
+  color: white;
+
+  box-shadow:
+    0 8px 32px
+    rgba(
+      0,
+      0,
+      0,
+      0.2
+    );
+}
+
+.glass-card h2 {
+
+  text-align: center;
+
+  margin-bottom: 25px;
+}
+
+.glass-card form {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 15px;
+}
+
+.glass-card input {
+
+  padding: 14px;
+
+  border: none;
+
+  border-radius: 12px;
+
+  outline: none;
+}
+
+.glass-card button {
+
+  background:
+    var(--success);
+
+  color: white;
+
+  border: none;
+
+  padding: 14px;
+
+  border-radius: 12px;
+
+  font-weight: 600;
+
+  transition: 0.3s;
+}
+
+.glass-card button:hover {
+
+  transform:
+    translateY(-2px);
+}
+
+/* =====================================
+   ERROR TEXT
+===================================== */
+
+.error {
+
+  color: #ffd4d4;
+
+  font-size: 13px;
+}
+
+/* =====================================
+   UTILITY CLASSES
+===================================== */
+
+.text-center {
+  text-align: center;
+}
+
+.mt-1 {
+  margin-top: 10px;
+}
+
+.mt-2 {
+  margin-top: 20px;
+}
+
+.mt-3 {
+  margin-top: 30px;
+}
+
+/* =====================================
+   DASHBOARD PLACEHOLDER
+===================================== */
+
+.dashboard-container {
+
+  padding: 30px;
+}
+
+/* =====================================
+   RESPONSIVE
+===================================== */
+
+@media (max-width: 768px) {
+
+  .glass-card {
+
+    width: 100%;
+  }
+
+}
