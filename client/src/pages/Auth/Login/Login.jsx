@@ -1,25 +1,23 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-
 import { motion } from "framer-motion";
-
 import { useNavigate } from "react-router-dom";
-
 import { toast } from "react-toastify";
+
+import authService from "../../../services/authService";
+import { useAuth } from "../../../context/AuthContext";
 
 import {
   FaEye,
   FaEyeSlash,
-  FaUserShield
+  FaShieldAlt,
+  FaGoogle,
+  FaApple,
+  FaSignInAlt
 } from "react-icons/fa";
 
 import { MdEmail } from "react-icons/md";
-
 import { RiLockPasswordFill } from "react-icons/ri";
-
-import authService from "../../../services/authService";
-
-import { useAuth } from "../../../context/AuthContext";
 
 import "./Login.css";
 
@@ -46,37 +44,59 @@ const Login = () => {
 
       const response =
         await authService.login({
-          identifier: data.identifier,
-          password: data.password
+          identifier:
+            data.identifier,
+          password:
+            data.password
         });
 
-      login(
-        response.user,
-        response.token
+        login(
+          response.user,
+          response.token
+        )
+
+      const token =
+        response?.token;
+
+      const user =
+        response?.user;
+
+      if (!user) {
+        throw new Error(
+          "Invalid server response"
+        );
+      }
+
+      localStorage.setItem(
+        "token",
+        token
+      );
+
+      localStorage.setItem(
+        "user",
+        JSON.stringify(user)
       );
 
       toast.success(
-        "Login Successful"
+        `Welcome ${user.fullName}`
       );
 
-      switch (
-        response.user.role
-      ) {
+      switch (user.role) {
         case "customer":
           navigate(
             "/customer/dashboard"
           );
           break;
 
-        case "claimOfficer":
-          navigate(
-            "/claim-officer/dashboard"
-          );
-          break;
-
         case "surveyor":
           navigate(
             "/surveyor/dashboard"
+          );
+          break;
+
+        case "claimOfficer":
+          navigate(
+            "/claim-officer/dashboard"
           );
           break;
 
@@ -87,27 +107,36 @@ const Login = () => {
           break;
 
         default:
-          navigate("/login");
+          navigate("/");
       }
+
     } catch (error) {
+
       toast.error(
         error?.response?.data
           ?.message ||
-          "Login Failed"
+          error?.message ||
+          "Invalid credentials"
       );
+
     } finally {
+
       setLoading(false);
+
     }
   };
 
   return (
-    <div className="login-container">
+    <div className="login-page">
+
+      <div className="login-circle circle-one"></div>
+      <div className="login-circle circle-two"></div>
 
       <motion.div
-        className="login-card"
+        className="login-wrapper"
         initial={{
           opacity: 0,
-          scale: 0.9
+          scale: 0.95
         }}
         animate={{
           opacity: 1,
@@ -117,163 +146,252 @@ const Login = () => {
           duration: 0.5
         }}
       >
-        <div className="login-header">
-          <FaUserShield
-            size={55}
-          />
+
+        {/* Left Side */}
+
+        <motion.div
+          className="login-brand"
+          initial={{
+            x: -80,
+            opacity: 0
+          }}
+          animate={{
+            x: 0,
+            opacity: 1
+          }}
+        >
+
+          <div className="brand-icon">
+            <FaShieldAlt />
+          </div>
 
           <h1>
-            Insurance Portal
+            SureCare Insurance
           </h1>
 
+          <h2>
+            Secure Claim
+            Management System
+          </h2>
+
           <p>
-            Secure Login
+            Fast Claims • Smart
+            Tracking • Secure
+            Verification
           </p>
-        </div>
 
-        <form
-          onSubmit={handleSubmit(
-            onSubmit
-          )}
+          <div className="feature-list">
+
+            <div className="feature-item">
+              ✓ Real-Time Claim Tracking
+            </div>
+
+            <div className="feature-item">
+              ✓ Surveyor Management
+            </div>
+
+            <div className="feature-item">
+              ✓ Secure Document Storage
+            </div>
+
+            <div className="feature-item">
+              ✓ Instant Notifications
+            </div>
+
+          </div>
+
+        </motion.div>
+
+        {/* Right Side */}
+
+        <motion.div
+          className="login-card"
+          initial={{
+            x: 80,
+            opacity: 0
+          }}
+          animate={{
+            x: 0,
+            opacity: 1
+          }}
         >
-          <div className="input-group">
-            <MdEmail />
 
-            <input
-              type="text"
-              placeholder="Email / Username / Mobile"
-              {...register(
-                "identifier",
-                {
-                  required:
-                    "Identifier Required"
-                }
-              )}
-            />
+          <div className="login-header">
+
+            <h2>
+              Welcome Back 👋
+            </h2>
+
+            <p>
+              Sign in to continue
+            </p>
+
+          </div>
+
+          <form
+            onSubmit={handleSubmit(
+              onSubmit
+            )}
+          >
+
+            {/* Identifier */}
+
+            <div className="input-group">
+
+              <MdEmail />
+
+              <input
+                type="text"
+                placeholder="Email / Username / Mobile"
+                {...register(
+                  "identifier",
+                  {
+                    required:
+                      "Email, Username or Mobile is required"
+                  }
+                )}
+              />
+
+            </div>
 
             {errors.identifier && (
-              <span className="error">
+              <p className="error">
                 {
                   errors.identifier
                     .message
                 }
-              </span>
+              </p>
             )}
-          </div>
 
-          <div className="input-group">
-            <RiLockPasswordFill />
+            {/* Password */}
 
-            <input
-              type={
-                showPassword
-                  ? "text"
-                  : "password"
-              }
-              placeholder="Password"
-              {...register(
-                "password",
-                {
-                  required:
-                    "Password Required"
+            <div className="input-group">
+
+              <RiLockPasswordFill />
+
+              <input
+                type={
+                  showPassword
+                    ? "text"
+                    : "password"
                 }
-              )}
-            />
+                placeholder="Password"
+                {...register(
+                  "password",
+                  {
+                    required:
+                      "Password is required",
+                    minLength: {
+                      value: 6,
+                      message:
+                        "Password must be at least 6 characters"
+                    }
+                  }
+                )}
+              />
 
-            <button
-              type="button"
-              className="eye-btn"
-              onClick={() =>
-                setShowPassword(
-                  !showPassword
-                )
-              }
-            >
-              {showPassword ? (
-                <FaEyeSlash />
-              ) : (
-                <FaEye />
-              )}
-            </button>
+              <button
+                type="button"
+                className="eye-btn"
+                onClick={() =>
+                  setShowPassword(
+                    !showPassword
+                  )
+                }
+              >
+                {showPassword ? (
+                  <FaEyeSlash />
+                ) : (
+                  <FaEye />
+                )}
+              </button>
+
+            </div>
 
             {errors.password && (
-              <span className="error">
+              <p className="error">
                 {
                   errors.password
                     .message
                 }
-              </span>
+              </p>
             )}
-          </div>
 
-          <div className="options">
-            <label>
-              <input
-                type="checkbox"
-              />
-              Remember Me
-            </label>
+            <div className="login-options">
 
-            <span
-              className="forgot-link"
-              onClick={() =>
-                navigate(
-                  "/forgot-password"
-                )
-              }
+              <span
+                className="forgot-link"
+                onClick={() =>
+                  navigate(
+                    "/forgot-password"
+                  )
+                }
+              >
+                Forgot Password?
+              </span>
+
+            </div>
+
+            <motion.button
+              type="submit"
+              className="login-btn"
+              whileHover={{
+                scale: 1.02
+              }}
+              whileTap={{
+                scale: 0.98
+              }}
+              disabled={loading}
             >
-              Forgot Password?
-            </span>
-          </div>
 
-          <motion.button
-            type="submit"
-            className="login-btn"
-            whileHover={{
-              scale: 1.05
-            }}
-            whileTap={{
-              scale: 0.95
-            }}
-            disabled={loading}
-          >
-            {loading
-              ? "Logging In..."
-              : "Login"}
-          </motion.button>
+              <FaSignInAlt />
 
-          <div className="divider">
-            OR
-          </div>
+              {loading
+                ? "Logging In..."
+                : "Login"}
 
-          <button
-            type="button"
-            className="google-btn"
-          >
-            Login with Google
-          </button>
+            </motion.button>
 
-          <button
-            type="button"
-            className="apple-btn"
-          >
-            Login with Apple
-          </button>
+            <div className="divider">
+              <span>OR</span>
+            </div>
 
-          <p className="signup-link">
-            Don't have an account?
-
-            <span
-              onClick={() =>
-                navigate(
-                  "/signup"
-                )
-              }
+            <button
+              type="button"
+              className="google-btn"
             >
-              Sign Up
-            </span>
-          </p>
-        </form>
+              <FaGoogle />
+              Continue with Google
+            </button>
+
+            <button
+              type="button"
+              className="apple-btn"
+            >
+              <FaApple />
+              Continue with Apple
+            </button>
+
+            <div className="signup-link">
+
+              Don't have an account?
+
+              <span
+                onClick={() =>
+                  navigate(
+                    "/signup"
+                  )
+                }
+              >
+                Sign Up
+              </span>
+
+            </div>
+
+          </form>
+
+        </motion.div>
+
       </motion.div>
 
     </div>
