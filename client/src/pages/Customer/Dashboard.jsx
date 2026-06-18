@@ -8,15 +8,15 @@ const CustomerDashboard = () => {
 
       <div className="cards">
         <div className="card">
-          Active Claims: 3
+          Active Claims: 
         </div>
 
         <div className="card">
-          Pending Claims: 1
+          Pending Claims: 
         </div>
 
         <div className="card">
-          Approved: 5
+          Approved: 
         </div>
       </div>
     </DashboardLayout>
