@@ -131,7 +131,7 @@ const Signup = () => {
       gender: data.gender,
       address: data.address,
       password: data.password,
-      role: data.role
+      role: "Customer"
 };
 
 console.log("Sending Data:", payload);
@@ -577,7 +577,7 @@ console.log("Sending Data:", payload);
               </p>
             )}
 
-            {/* Roles */}
+          {/*  Roles 
 
             <h4 className="role-title">
               Select Role
@@ -646,7 +646,7 @@ console.log("Sending Data:", payload);
               type="hidden"
               {...register("role")}
             />
-
+*/}
             <label className="terms">
               <input
                 type="checkbox"
