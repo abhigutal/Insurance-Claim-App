@@ -153,7 +153,7 @@ const Sidebar = () => {
       <div className="top-section">
         {open && (
           <div className="logo">
-            Insurance CMS
+            SureCare Insurance
           </div>
         )}
 
