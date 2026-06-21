@@ -3,8 +3,12 @@ import crypto from "crypto";
 
 import User from "../models/User.js";
 import generateToken from "../utils/generateToken.js";
+import { OAuth2Client } from "google-auth-library";
 
 const resetTokens = new Map();
+const googleClient = new OAuth2Client(
+  process.env.GOOGLE_CLIENT_ID
+);
 
 /*
 =========================================
@@ -153,6 +157,140 @@ export const loginUser = async (req, res) => {
     });
   }
 };
+
+/*
+=========================================
+GOOGLE LOGIN
+=========================================
+*/
+
+export const googleLoginUser =
+  async (req, res) => {
+
+    try {
+
+      const {
+        accessToken
+      } = req.body;
+
+      const response =
+        await fetch(
+          `https://www.googleapis.com/oauth2/v3/userinfo?access_token=${accessToken}`
+        );
+
+      const googleUser =
+        await response.json();
+
+      if (!googleUser.email) {
+
+        return res.status(400).json({
+          success: false,
+          message:
+            "Google authentication failed"
+        });
+
+      }
+
+      let user =
+        await User.findByEmail(
+          googleUser.email
+        );
+
+      /*
+      Create user automatically
+      if not exists
+      */
+
+      if (!user) {
+
+        const randomPassword =
+          crypto
+            .randomBytes(20)
+            .toString("hex");
+
+        const hashedPassword =
+          await bcrypt.hash(
+            randomPassword,
+            10
+          );
+
+        const result =
+          await User.create({
+
+            fullName:
+              googleUser.name,
+
+            email:
+              googleUser.email,
+
+            mobile: null,
+
+            adhaar: null,
+
+            dob: null,
+
+            gender: null,
+
+            address: null,
+
+            username:
+              googleUser.email
+                .split("@")[0],
+
+            password:
+              hashedPassword,
+
+            role:
+              "customer"
+          });
+
+        user =
+          await User.findById(
+            result.insertId
+          );
+      }
+
+      const token =
+        generateToken(user);
+
+      return res.status(200).json({
+
+        success: true,
+
+        message:
+          "Google Login Successful",
+
+        token,
+
+        user: {
+
+          id: user.id,
+
+          fullName:
+            user.full_name,
+
+          email:
+            user.email,
+
+          role:
+            user.role
+        }
+      });
+
+    } catch (error) {
+
+      return res.status(500).json({
+
+        success: false,
+
+        message:
+          error.message
+
+      });
+
+    }
+
+  };
 
 /*
 =========================================
