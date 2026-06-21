@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 
 import authService from "../../../services/authService";
 import { useAuth } from "../../../context/AuthContext";
+import { useGoogleLogin } from "@react-oauth/google";
 
 import {
   FaEye,
@@ -18,25 +19,116 @@ import {
 
 import { MdEmail } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
+import { dotenv } from 'dotenv';
 
 import "./Login.css";
 
 const Login = () => {
+    console.log(import.meta.env);
   const navigate = useNavigate();
-
   const { login } = useAuth();
 
-  const [showPassword, setShowPassword] =
-    useState(false);
-
-  const [loading, setLoading] =
-    useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
     handleSubmit,
     formState: { errors }
   } = useForm();
+
+  const googleLogin = useGoogleLogin({
+
+  onSuccess: async (tokenResponse) => {
+
+    try {
+
+      setLoading(true);
+
+      const response =
+        await authService.googleLogin({
+          accessToken:
+            tokenResponse.access_token
+        });
+
+      const {
+        token,
+        user
+      } = response;
+
+      login(
+        user,
+        token
+      );
+
+      localStorage.setItem(
+        "token",
+        token
+      );
+
+      localStorage.setItem(
+        "user",
+        JSON.stringify(user)
+      );
+
+      toast.success(
+        `Welcome ${user.fullName}`
+      );
+
+      switch (user.role) {
+
+        case "customer":
+          navigate(
+            "/customer/dashboard"
+          );
+          break;
+
+        case "surveyor":
+          navigate(
+            "/surveyor/dashboard"
+          );
+          break;
+
+        case "claimOfficer":
+          navigate(
+            "/claim-officer/dashboard"
+          );
+          break;
+
+        case "admin":
+          navigate(
+            "/admin/dashboard"
+          );
+          break;
+
+        default:
+          navigate("/");
+      }
+
+    } catch (error) {
+
+      toast.error(
+        error?.response?.data?.message ||
+        "Google Login Failed"
+      );
+
+    } finally {
+
+      setLoading(false);
+
+    }
+
+  },
+
+  onError: () => {
+
+    toast.error(
+      "Google Sign In Failed"
+    );
+
+  }
+
+});
 
   const onSubmit = async (data) => {
     try {
@@ -359,6 +451,7 @@ const Login = () => {
             <button
               type="button"
               className="google-btn"
+              onClick = {() => googleLogin()}
             >
               <FaGoogle />
               Continue with Google
