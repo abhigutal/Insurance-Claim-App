@@ -1,67 +1,58 @@
 package com.example.demo.config;
 
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.web.SecurityFilterChain;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.SecurityFilterChain;
+
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+
 import java.util.List;
+
 
 
 @Configuration
 public class SecurityConfig {
 
 
+
+    // BCrypt password encryption bean
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http)
-            throws Exception {
+    public PasswordEncoder passwordEncoder(){
 
-
-        http
-                .csrf(csrf -> csrf.disable())
-
-                .cors(cors ->
-                        cors.configurationSource(corsConfigurationSource())
-                )
-
-                .authorizeHttpRequests(auth -> auth
-
-                        .requestMatchers(
-                                "/insurances",
-                                "/login"
-                        ).permitAll()
-
-                        .anyRequest().permitAll()
-                );
-
-
-        return http.build();
+        return new BCryptPasswordEncoder();
 
     }
 
 
 
+
+
+    // Enable CORS
     @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
+    public CorsConfigurationSource corsConfigurationSource(){
 
 
-        CorsConfiguration configuration =
+        CorsConfiguration config =
                 new CorsConfiguration();
 
 
-        configuration.setAllowedOrigins(
-                List.of(
-                        "http://localhost:5173"
-                )
+        // React URL
+        config.setAllowedOrigins(
+                List.of("http://localhost:5174")
         );
 
 
-        configuration.setAllowedMethods(
+        // Allowed HTTP methods
+        config.setAllowedMethods(
                 List.of(
                         "GET",
                         "POST",
@@ -72,12 +63,14 @@ public class SecurityConfig {
         );
 
 
-        configuration.setAllowedHeaders(
+        // Allow headers from React
+        config.setAllowedHeaders(
                 List.of("*")
         );
 
 
-        configuration.setAllowCredentials(true);
+        // Allow cookies/auth headers
+        config.setAllowCredentials(true);
 
 
 
@@ -87,7 +80,7 @@ public class SecurityConfig {
 
         source.registerCorsConfiguration(
                 "/**",
-                configuration
+                config
         );
 
 
@@ -97,12 +90,37 @@ public class SecurityConfig {
 
 
 
-    // ADD THIS PART
+
+
+    // Spring Security configuration
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public SecurityFilterChain securityFilterChain(
+            HttpSecurity http
+    ) throws Exception {
 
 
-        return new BCryptPasswordEncoder();
+
+        http
+                .cors(cors -> {})
+                .csrf(csrf -> csrf.disable())
+
+                .authorizeHttpRequests(auth -> auth
+
+                        // allow signup and login
+                        .requestMatchers(
+                                "/insurances",
+                                "/login"
+                        )
+                        .permitAll()
+
+
+                        // other APIs need authentication
+                        .anyRequest()
+                        .permitAll()
+                );
+
+
+        return http.build();
 
     }
 

@@ -5,21 +5,21 @@ import com.example.demo.model.Insurance;
 import com.example.demo.model.LoginRequest;
 import com.example.demo.service.InsuranceService;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.util.HashMap;
 import java.util.Map;
 
 
+
 @RestController
-@RequestMapping("/")
-@CrossOrigin(
-        origins = "http://localhost:5176",
-        allowCredentials = "true"
-)
+@CrossOrigin(origins = "*")
 public class InsuranceController {
+
 
 
     @Autowired
@@ -27,26 +27,21 @@ public class InsuranceController {
 
 
 
-    // Signup API
+
+
     @PostMapping("/insurances")
-    public ResponseEntity<?> saveInsurance(
-            @RequestBody Insurance insurance) {
+    public Insurance saveInsurance(
+            @RequestBody Insurance insurance){
 
 
-        Insurance savedUser =
-                sr.saveInsurance(insurance);
-
-
-        return ResponseEntity.ok(savedUser);
+        return sr.saveInsurance(insurance);
 
     }
 
-
-
-    // Login API
     @PostMapping("/login")
     public ResponseEntity<?> login(
-            @RequestBody LoginRequest request) {
+            @RequestBody LoginRequest request){
+
 
 
         Insurance user =
@@ -54,10 +49,11 @@ public class InsuranceController {
 
 
 
-        if (user == null) {
+
+        if(user == null){
 
 
-            Map<String, String> error =
+            Map<String,String> error =
                     new HashMap<>();
 
 
@@ -75,7 +71,10 @@ public class InsuranceController {
 
 
 
-        Map<String, Object> response =
+
+
+
+        Map<String,Object> response =
                 new HashMap<>();
 
 
@@ -91,8 +90,11 @@ public class InsuranceController {
         );
 
 
+
         return ResponseEntity.ok(response);
 
     }
+
+
 
 }
