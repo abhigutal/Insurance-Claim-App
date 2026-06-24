@@ -1,86 +1,78 @@
 import axios from "axios";
 
-const API =
-  "http://localhost:5000/api/auth";
 
-const googleLogin = async (data) => {
+const API = "http://localhost:8080";
 
-  const response = await axios.post(
-    `${API}/google-login`,
-    { token: data.credential }
-  );
-  return response.data;
-};
+
 
 const authService = {
 
-  register: async (
-    userData
-  ) => {
-    const response =
-      await axios.post(
-        `${API}/register`,
-        userData
-      );
 
-    return response.data;
-  },
 
-  login: async (
-    credentials
-  ) => {
-    const response =
-      await axios.post(
-        `${API}/login`,
-        credentials
-      );
+register: async (userData) => {
 
-    return response.data;
-  },
+  const response =
+    await axios.post(
+      `${API}/insurances`,
+      {
 
-  forgotPassword:
-    async (email) => {
-      const response =
-        await axios.post(
-          `${API}/forgot-password`,
-          { email }
-        );
+        fullName: userData.fullName,
 
-      return response.data;
-    },
+        email: userData.email,
 
-  resetPassword:
-    async (
-      token,
-      password
-    ) => {
-      const response =
-        await axios.post(
-          `${API}/reset-password`,
-          {
-            token,
-            password
-          }
-        );
+        mobile: userData.mobile,
 
-      return response.data;
-    },
+        adhaar: userData.adhaar,
 
-  getProfile:
-    async (token) => {
-      const response =
-        await axios.get(
-          `${API}/profile`,
-          {
-            headers: {
-              Authorization:
-                `Bearer ${token}`
-            }
-          }
-        );
+        dob: userData.dob,
 
-      return response.data;
-    }
+        gender: userData.gender,
+
+        address: userData.address,
+
+        username: userData.username,
+
+        password: userData.password
+
+      }
+    );
+
+
+  return response.data;
+
+},
+
+
+
+
+
+login: async(loginData)=>{
+
+
+const response =
+await axios.post(
+`${API}/login`,
+{
+
+identifier:
+loginData.identifier,
+
+
+password:
+loginData.password
+
+});
+
+
+return response.data;
+
+
+}
+
+
+
 };
 
-export default { authService, googleLogin };
+
+
+export default authService;
