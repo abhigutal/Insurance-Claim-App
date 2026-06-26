@@ -3,7 +3,7 @@ import axios from "axios";
 const API =
   "http://localhost:5000/api/auth";
 
-const googleLogin = async (data) => {
+export const googleLogin = async (data) => {
 
   const response = await axios.post(
     `${API}/google-login`,
@@ -27,12 +27,12 @@ const authService = {
   },
 
   login: async (
-    credentials
+    userData
   ) => {
     const response =
       await axios.post(
         `${API}/login`,
-        credentials
+        userData
       );
 
     return response.data;
@@ -83,4 +83,4 @@ const authService = {
     }
 };
 
-export default { authService, googleLogin };
+export default authService;
