@@ -3,6 +3,15 @@ import axios from "axios";
 const API =
   "http://localhost:5000/api/auth";
 
+export const googleLogin = async (data) => {
+
+  const response = await axios.post(
+    `${API}/google-login`,
+    { token: data.credential }
+  );
+  return response.data;
+};
+
 const authService = {
 
   register: async (
@@ -18,12 +27,12 @@ const authService = {
   },
 
   login: async (
-    credentials
+    userData
   ) => {
     const response =
       await axios.post(
         `${API}/login`,
-        credentials
+        userData
       );
 
     return response.data;

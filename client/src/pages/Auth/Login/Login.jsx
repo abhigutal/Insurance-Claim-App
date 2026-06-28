@@ -18,25 +18,108 @@ import {
 
 import { MdEmail } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
+import { dotenv } from 'dotenv';
+import {
+    GoogleAuthProvider,
+    signInWithPopup
+} from "firebase/auth";
 
+import { auth } from "../../../firebase";
 import "./Login.css";
 
 const Login = () => {
+    console.log(import.meta.env);
   const navigate = useNavigate();
-
   const { login } = useAuth();
 
-  const [showPassword, setShowPassword] =
-    useState(false);
-
-  const [loading, setLoading] =
-    useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
     handleSubmit,
     formState: { errors }
   } = useForm();
+
+const handleGoogleLogin = async () => {
+
+    try {
+
+        setLoading(true);
+
+        const provider = new GoogleAuthProvider();
+
+        provider.setCustomParameters({
+            prompt: "select_account"
+        });
+
+        const result = await signInWithPopup(auth, provider);
+
+        const firebaseToken = await result.user.getIdToken();
+
+        const response = await authService.googleLogin({
+            token: firebaseToken
+        });
+
+        login(
+            response.user,
+            response.token
+        );
+
+        localStorage.setItem(
+            "token",
+            response.token
+        );
+
+        localStorage.setItem(
+            "user",
+            JSON.stringify(response.user)
+        );
+
+        toast.success(
+            `Welcome ${response.user.fullName}`
+        );
+
+        switch (response.user.role) {
+
+            case "customer":
+                navigate("/customer/dashboard");
+                break;
+
+            case "surveyor":
+                navigate("/surveyor/dashboard");
+                break;
+
+            case "claimOfficer":
+                navigate("/claim-officer/dashboard");
+                break;
+
+            case "admin":
+                navigate("/admin/dashboard");
+                break;
+
+            default:
+                navigate("/");
+        }
+
+    }
+    catch(error){
+
+        console.log(error);
+
+        toast.error(
+            error?.response?.data?.message ||
+            "Google Login Failed"
+        );
+
+    }
+    finally{
+
+        setLoading(false);
+
+    }
+
+};
 
   const onSubmit = async (data) => {
     try {
@@ -359,6 +442,7 @@ const Login = () => {
             <button
               type="button"
               className="google-btn"
+              onClick={handleGoogleLogin}
             >
               <FaGoogle />
               Continue with Google
