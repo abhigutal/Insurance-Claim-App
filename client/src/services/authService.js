@@ -1,78 +1,86 @@
 import axios from "axios";
 
+const API =
+  "http://localhost:5000/api/auth";
 
-const API = "http://localhost:8080";
+export const googleLogin = async (data) => {
 
-
+  const response = await axios.post(
+    `${API}/google-login`,
+    { token: data.credential }
+  );
+  return response.data;
+};
 
 const authService = {
 
+  register: async (
+    userData
+  ) => {
+    const response =
+      await axios.post(
+        `${API}/register`,
+        userData
+      );
 
+    return response.data;
+  },
 
-register: async (userData) => {
+  login: async (
+    userData
+  ) => {
+    const response =
+      await axios.post(
+        `${API}/login`,
+        userData
+      );
 
-  const response =
-    await axios.post(
-      `${API}/insurances`,
-      {
+    return response.data;
+  },
 
-        fullName: userData.fullName,
+  forgotPassword:
+    async (email) => {
+      const response =
+        await axios.post(
+          `${API}/forgot-password`,
+          { email }
+        );
 
-        email: userData.email,
+      return response.data;
+    },
 
-        mobile: userData.mobile,
+  resetPassword:
+    async (
+      token,
+      password
+    ) => {
+      const response =
+        await axios.post(
+          `${API}/reset-password`,
+          {
+            token,
+            password
+          }
+        );
 
-        adhaar: userData.adhaar,
+      return response.data;
+    },
 
-        dob: userData.dob,
+  getProfile:
+    async (token) => {
+      const response =
+        await axios.get(
+          `${API}/profile`,
+          {
+            headers: {
+              Authorization:
+                `Bearer ${token}`
+            }
+          }
+        );
 
-        gender: userData.gender,
-
-        address: userData.address,
-
-        username: userData.username,
-
-        password: userData.password
-
-      }
-    );
-
-
-  return response.data;
-
-},
-
-
-
-
-
-login: async(loginData)=>{
-
-
-const response =
-await axios.post(
-`${API}/login`,
-{
-
-identifier:
-loginData.identifier,
-
-
-password:
-loginData.password
-
-});
-
-
-return response.data;
-
-
-}
-
-
-
+      return response.data;
+    }
 };
-
-
 
 export default authService;
