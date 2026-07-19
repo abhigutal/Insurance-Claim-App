@@ -1,0 +1,143 @@
+.create-claim-page{
+
+padding:30px;
+
+}
+
+.claim-form-card{
+
+background:#ffffff;
+
+border-radius:20px;
+
+padding:35px;
+
+box-shadow:0 10px 25px rgba(0,0,0,.05);
+
+border:1px solid #edf2f7;
+
+}
+
+.claim-form{
+
+display:grid;
+
+grid-template-columns:repeat(2,1fr);
+
+gap:20px;
+
+margin-top:30px;
+
+}
+
+.form-group{
+
+display:flex;
+
+flex-direction:column;
+
+}
+
+.form-group label{
+
+font-size:14px;
+
+font-weight:600;
+
+margin-bottom:8px;
+
+color:#334155;
+
+}
+
+.form-group input,
+
+.form-group textarea,
+
+.form-group select{
+
+padding:14px;
+
+border:1px solid #dbe4ee;
+
+border-radius:12px;
+
+font-size:15px;
+
+outline:none;
+
+transition:.3s;
+
+}
+
+.form-group input:focus,
+
+.form-group textarea:focus,
+
+.form-group select:focus{
+
+border-color:#2563eb;
+
+box-shadow:0 0 0 3px rgba(37,99,235,.15);
+
+}
+
+.form-group textarea{
+
+resize:vertical;
+
+min-height:140px;
+
+}
+
+.full-width{
+
+grid-column:1/-1;
+
+}
+
+.submit-btn{
+
+margin-top:30px;
+
+background:#2563eb;
+
+color:white;
+
+padding:14px 28px;
+
+border:none;
+
+border-radius:12px;
+
+font-size:16px;
+
+font-weight:600;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+.submit-btn:hover{
+
+background:#1d4ed8;
+
+}
+
+@media(max-width:768px){
+
+.claim-form{
+
+grid-template-columns:1fr;
+
+}
+
+.create-claim-page{
+
+padding:15px;
+
+}
+
+}

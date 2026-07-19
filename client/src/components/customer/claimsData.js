@@ -1,0 +1,101 @@
+export const claimsData = [
+  {
+    id: 1,
+    claimId: "CLM-2026-1001",
+    policyNo: "POL-100245",
+    policyType: "Health Insurance",
+    claimType: "Cashless",
+    amount: 25000,
+    date: "2026-07-10",
+    incidentDate: "2026-07-08",
+    hospital: "City Care Hospital",
+    officer: "Rahul Sharma",
+    surveyor: "N/A",
+    status: "Approved",
+    remarks: "Claim approved successfully."
+  },
+  {
+    id: 2,
+    claimId: "CLM-2026-1002",
+    policyNo: "POL-200541",
+    policyType: "Vehicle Insurance",
+    claimType: "Accident",
+    amount: 18500,
+    date: "2026-07-12",
+    incidentDate: "2026-07-11",
+    hospital: "-",
+    officer: "Priya Patil",
+    surveyor: "Anil Deshmukh",
+    status: "Pending",
+    remarks: "Survey is under progress."
+  },
+  {
+    id: 3,
+    claimId: "CLM-2026-1003",
+    policyNo: "POL-300985",
+    policyType: "Life Insurance",
+    claimType: "Death Claim",
+    amount: 500000,
+    date: "2026-07-13",
+    incidentDate: "2026-07-12",
+    hospital: "-",
+    officer: "Sneha Joshi",
+    surveyor: "-",
+    status: "Under Review",
+    remarks: "Documents are being verified."
+  },
+  {
+    id: 4,
+    claimId: "CLM-2026-1004",
+    policyNo: "POL-100684",
+    policyType: "Health Insurance",
+    claimType: "Reimbursement",
+    amount: 14200,
+    date: "2026-07-14",
+    incidentDate: "2026-07-13",
+    hospital: "Sunrise Hospital",
+    officer: "Rahul Sharma",
+    surveyor: "-",
+    status: "Rejected",
+    remarks: "Required documents were missing."
+  },
+  {
+    id: 5,
+    claimId: "CLM-2026-1005",
+    policyNo: "POL-400215",
+    policyType: "Travel Insurance",
+    claimType: "Medical",
+    amount: 38000,
+    date: "2026-07-15",
+    incidentDate: "2026-07-14",
+    hospital: "Global Medical Center",
+    officer: "Neha Kulkarni",
+    surveyor: "-",
+    status: "Approved",
+    remarks: "Payment has been initiated."
+  },
+  {
+    id: 6,
+    claimId: "CLM-2026-1006",
+    policyNo: "POL-500624",
+    policyType: "Vehicle Insurance",
+    claimType: "Theft",
+    amount: 95000,
+    date: "2026-07-16",
+    incidentDate: "2026-07-15",
+    hospital: "-",
+    officer: "Priya Patil",
+    surveyor: "Anil Deshmukh",
+    status: "Active",
+    remarks: "Investigation is in progress."
+  }
+];
+
+export const claimFilters = [
+  "All",
+  "Pending",
+  "Approved",
+  "Rejected",
+  "Active",
+  "Under Review"
+];

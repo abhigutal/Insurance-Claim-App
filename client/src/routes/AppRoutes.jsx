@@ -13,6 +13,13 @@ import ResetPassword from "../pages/Auth/ResetPassword/ResetPassword";
 
 import ProtectedRoute from "../components/common/ProtectedRoute/ProtectedRoute";
 
+import ClaimStatus from "../pages/Customer/ClaimStatus";
+import MyClaims from "../pages/Customer/Claims/MyClaims";
+import CreateClaim from "../pages/Customer/Claims/CreateClaim";
+import Policies from "../pages/Customer/Policies";
+import Profile from "../pages/Customer/Profile";
+import Settings from "../pages/Customer/Settings";
+
 const AppRoutes = () => {
   return (
     <Routes>
@@ -42,12 +49,42 @@ const AppRoutes = () => {
       />
 
       <Route
+        path="/customer/settings"
+        element={<Settings />}
+      />
+
+      <Route
         path="/customer/dashboard"
         element={
           <ProtectedRoute role="customer">
             <CustomerDashboard />
           </ProtectedRoute>
         }
+      />
+
+      <Route
+        path="/customer/claim-status"
+        element={<ClaimStatus />}
+      />
+
+      <Route
+        path="/customer/my-claims"
+        element={<MyClaims />}
+      />
+
+      <Route
+        path="/customer/policies"
+        element={<Policies />}
+      />
+
+      <Route
+        path="/customer/create-claim"
+        element={<CreateClaim />}
+      />  
+
+      <Route
+        path="/customer/profile"
+        element={<Profile />}
       />
 
       <Route

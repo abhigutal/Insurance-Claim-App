@@ -1,0 +1,41 @@
+.customer-dashboard{
+    display:flex;
+    flex-direction:column;
+    gap:24px;
+    
+}
+
+.stats-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
+
+.dashboard-grid{
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    gap:25px;
+}
+
+.dashboard-left,
+.dashboard-right{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+@media(max-width:992px){
+
+.dashboard-grid{
+grid-template-columns:1fr;
+}
+
+}
+
+@media(max-width:768px){
+
+.stats-grid{
+grid-template-columns:1fr;
+}
+
+}

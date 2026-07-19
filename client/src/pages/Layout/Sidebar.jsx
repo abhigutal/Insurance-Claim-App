@@ -1,10 +1,15 @@
 import React, { useState, useRef, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+
+import CreateClaim from "../Customer/Claims/CreateClaim";
+import ClaimStatus from "../Customer/ClaimStatus";
+
 import {
   FaBars,
   FaHome,
   FaFileAlt,
+  FaTasks,
   FaClipboardCheck,
   FaSearch,
   FaUsers,
@@ -40,29 +45,30 @@ const Sidebar = () => {
   }, []);
 
   const customerMenu = [
+  
     {
       name: "Dashboard",
-      path: "/dashboard",
+      path: "/customer/dashboard",
       icon: <FaHome />,
     },
     {
       name: "My Claims",
-      path: "/claims",
+      path: "/customer/my-claims",
       icon: <FaFileAlt />,
     },
     {
       name: "Create Claim",
-      path: "/createclaim",
+      path: "/customer/create-claim",
       icon: <FaClipboardCheck />,
     },
     {
       name: "Claim Status",
-      path: "/claimstatus",
-      icon: <FaSearch />,
+      path: "/customer/claim-status",
+      icon: <FaTasks />,
     },
     {
       name: "Policies",
-      path: "/policies",
+      path: "/customer/policies",
       icon: <FaShieldAlt />,
     },
   ];

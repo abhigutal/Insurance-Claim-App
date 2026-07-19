@@ -1,0 +1,37 @@
+.document-upload{
+
+display:flex;
+
+flex-direction:column;
+
+gap:10px;
+
+}
+
+.document-upload label{
+
+font-weight:600;
+
+color:#334155;
+
+}
+
+.document-upload input{
+
+padding:12px;
+
+border:2px dashed #2563eb;
+
+border-radius:12px;
+
+background:#f8fafc;
+
+cursor:pointer;
+
+}
+
+.document-upload small{
+
+color:#64748b;
+
+}

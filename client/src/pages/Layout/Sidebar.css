@@ -1,5 +1,5 @@
 .sidebar {
-  height: 100vh;
+  height: auto;
   background: linear-gradient(180deg, #1e293b, #0f172a);
   color: white;
   transition: width 0.3s ease;
@@ -79,7 +79,7 @@
 .tooltip {
   position: absolute;
   left: 70px;
-  background: #111827;
+  background: #030b1c;
   padding: 5px 10px;
   border-radius: 6px;
   font-size: 12px;
